@@ -1,4 +1,5 @@
 .TodaysScore {
+  font-size: 30px;
   color: white;
   text-align: center;
   margin-top: 10%;
@@ -8,17 +9,19 @@
   color: white;
 }
 
-.ScoresList {
+/* .ScoresList {
   color:white;
   list-style: none;
   text-align: center;
   display: grid;
-}
+} */
 
-.WinButton {
+.resultText {
 text-align: center;
 }
 
 .noGame {
+  font-size: 40px;
   color: white;
 }
+

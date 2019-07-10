@@ -5,6 +5,7 @@ import './TodaysScore.css';
 
 
 
+
 export class TodaysScore extends Component {
   constructor() {
     let today = new Date()
@@ -18,7 +19,7 @@ export class TodaysScore extends Component {
   }
 
   componentDidMount = () => {
-    let today = this.state.today 
+    let today = this.state.today
     let teamId = this.state.teamId
     axios.get(`https://cors-anywhere.herokuapp.com/https://api.sportradar.us/mlb-t6/games/${today.getFullYear()}/${(today.getMonth()+1)}/${today.getUTCDate()}/boxscore.json?api_key=${apiKey}`,{crossdomain:true})
     .then(response => {
@@ -27,7 +28,7 @@ export class TodaysScore extends Component {
         return (game.game.home_team === teamId || game.game.away_team === teamId)
       })[0] : null
       this.setState({
-        todaysGame: todaysGame, 
+        todaysGame: todaysGame,
         myTeamAtHome: todaysGame ? todaysGame.home_team === teamId : null
       })
     })
@@ -47,7 +48,7 @@ export class TodaysScore extends Component {
           <div>
             <ul className="ScoresList">
               <li>
-                <p> You know it! </p>
+                <p className = "winText"> You know it! </p>
                 <p> {this.state.game.home.name} - {this.state.game.home.runs} </p>
                 <p> {this.state.game.away.name} - {this.state.game.away.runs} </p>
               </li>
@@ -71,7 +72,7 @@ export class TodaysScore extends Component {
     }
 
     return (
-      <div className="WinButton">
+      <div className="resultText">
         {body}
       </div>
     )
@@ -80,7 +81,3 @@ export class TodaysScore extends Component {
 }
 
 export default TodaysScore
-
-
-
-
