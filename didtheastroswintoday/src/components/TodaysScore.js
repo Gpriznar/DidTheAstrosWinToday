@@ -21,7 +21,7 @@ export class TodaysScore extends Component {
   componentDidMount = () => {
     let today = this.state.today
     let teamId = this.state.teamId
-    axios.get(`https://cors-anywhere.herokuapp.com/https://api.sportradar.us/mlb-t6/games/${today.getFullYear()}/${today.getMonth()}/${today.getUTCDate()}/boxscore.json?api_key=${apiKey}`,{crossdomain:true})
+    axios.get(`https://cors-anywhere.herokuapp.com/https://api.sportradar.us/mlb-t6/games/2019/07/07/boxscore.json?api_key=${apiKey}`,{crossdomain:true})
     .then(response => {
       let games = response.data.league.games
       let astrosGame = games ? games.filter(game => {

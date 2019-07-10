@@ -9,19 +9,23 @@
   color: white;
 }
 
-/* .ScoresList {
+.ScoresList {
   color:white;
   list-style: none;
   text-align: center;
   display: grid;
-} */
+}
 
 .resultText {
 text-align: center;
+font-family: 'Permanent Marker', cursive;
+color: white;
+font-size: 30px;
+
 }
 
 .noGame {
   font-size: 40px;
   color: white;
+  font-family: 'Permanent Marker', cursive;
 }
-
