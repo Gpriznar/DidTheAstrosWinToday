@@ -21,12 +21,16 @@ export class TodaysScore extends Component {
   componentDidMount = () => {
     let today = this.state.today
     let teamId = this.state.teamId
-    axios.get(`https://cors-anywhere.herokuapp.com/https://api.sportradar.us/mlb-t6/games/${today.getFullYear()}/${(today.getMonth()+1)}/${today.getUTCDate()}/boxscore.json?api_key=${apiKey}`,{crossdomain:true})
+    axios.get(`https://cors-anywhere.herokuapp.com/https://api.sportradar.us/mlb-t6/games/${today.getFullYear()}/${today.getMonth()}/${today.getUTCDate()}/boxscore.json?api_key=${apiKey}`,{crossdomain:true})
     .then(response => {
       let games = response.data.league.games
-      let todaysGame = games ? games.filter(game => {
+      let astrosGame = games ? games.filter(game => {
         return (game.game.home_team === teamId || game.game.away_team === teamId)
-      })[0] : null
+      }) : []
+      let todaysGame = null
+      if(astrosGame.length !== 0){
+        todaysGame = astrosGame[0].game
+      }
       this.setState({
         todaysGame: todaysGame,
         myTeamAtHome: todaysGame ? todaysGame.home_team === teamId : null
@@ -37,20 +41,20 @@ export class TodaysScore extends Component {
 
   render(){
     let body = null
-    if(!this.state.game){
+    if(!this.state.todaysGame){
       body = ( <div><p className="noGame"> No game so far today! Check back later</p></div> )
     }
     else {
       let myTeamAtHome = this.state.myTeamAtHome
-      let homeTeamWon = this.state.game.home.runs > this.state.game.away.runs
+      let homeTeamWon = this.state.todaysGame.home.runs > this.state.todaysGame.away.runs
       if ((myTeamAtHome && homeTeamWon) || (!myTeamAtHome && !homeTeamWon)){
         body = (
           <div>
             <ul className="ScoresList">
               <li>
                 <p className = "winText"> You know it! </p>
-                <p> {this.state.game.home.name} - {this.state.game.home.runs} </p>
-                <p> {this.state.game.away.name} - {this.state.game.away.runs} </p>
+                <p> {this.state.todaysGame.home.name} - {this.state.todaysGame.home.runs} </p>
+                <p> {this.state.todaysGame.away.name} - {this.state.todaysGame.away.runs} </p>
               </li>
             </ul>
           </div>
@@ -62,8 +66,8 @@ export class TodaysScore extends Component {
             <ul className="ScoresList">
               <li>
                 <p> Not Today Champ </p>
-                <p> {this.state.game.home.name} - {this.state.game.home.runs} </p>
-                <p> {this.state.game.away.name} - {this.state.game.away.runs} </p>
+                <p> {this.state.todaysGame.home.name} - {this.state.todaysGame.home.runs} </p>
+                <p> {this.state.todaysGame.away.name} - {this.state.todaysGame.away.runs} </p>
               </li>
             </ul>
           </div>
