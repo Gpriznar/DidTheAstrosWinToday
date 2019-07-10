@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import {apiKey} from '../apiKey'
 import './TodaysScore.css';
-import Schedule from './Schedule/Schedule'
 
 
 
@@ -74,7 +73,6 @@ export class TodaysScore extends Component {
     return (
       <div className="WinButton">
         {body}
-        <Schedule today = {this.state.today} teamId = {this.state.teamId}/>
       </div>
     )
   }
