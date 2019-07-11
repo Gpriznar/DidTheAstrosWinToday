@@ -16,7 +16,7 @@ function App() {
     <div className="bar-seven">2</div>
     <div className="bar-eight">2</div>
     <div className="bar-nine">2</div>
-    <div className="score-display"> </div>
+    <div className="score-display"></div>
 
     </div>
   );
