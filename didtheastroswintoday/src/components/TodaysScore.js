@@ -21,12 +21,13 @@ export class TodaysScore extends Component {
   componentDidMount = () => {
     let today = this.state.today
     let teamId = this.state.teamId
-    axios.get(`https://cors-anywhere.herokuapp.com/https://api.sportradar.us/mlb-t6/games/2019/07/07/boxscore.json?api_key=${apiKey}`,{crossdomain:true})
+    axios.get(`https://cors-anywhere.herokuapp.com/https://api.sportradar.us/mlb-t6/games/${today.getFullYear()}/${today.getMonth() + 1}/${today.getUTCDate()}/boxscore.json?api_key=${apiKey}`,{crossdomain:true})
     .then(response => {
       let games = response.data.league.games
       let astrosGame = games ? games.filter(game => {
         return (game.game.home_team === teamId || game.game.away_team === teamId)
       }) : []
+
       let todaysGame = null
       if(astrosGame.length !== 0){
         todaysGame = astrosGame[0].game
@@ -45,36 +46,40 @@ export class TodaysScore extends Component {
       body = ( <div><p className="noGame"> No game so far today! Check back later</p></div> )
     }
     else {
-      let myTeamAtHome = this.state.myTeamAtHome
-      let homeTeamWon = this.state.todaysGame.home.runs > this.state.todaysGame.away.runs
-      if ((myTeamAtHome && homeTeamWon) || (!myTeamAtHome && !homeTeamWon)){
-        body = (
-          <div>
-            <ul className="ScoresList">
-              <li>
-                <p className = "winText"> You know it! </p>
-                <p className="awayTeamText"> {this.state.todaysGame.away.name} - {this.state.todaysGame.away.runs} </p>
-                <p className="homeTeamText"> {this.state.todaysGame.home.name} - {this.state.todaysGame.home.runs} </p>
-              </li>
-            </ul>
-          </div>
-        )
+      if(new Date(this.state.todaysGame.scheduled).getTime() > this.state.today.getTime()){
+        body = (<div><p style = {{color: 'white'}}>Games starts later today.</p></div>)
       }
       else {
-        body = (
-          <div>
-            <ul className="ScoresList">
-              <li>
-                <p> Not Today Champ </p>
-                <p> {this.state.todaysGame.away.name} - {this.state.todaysGame.away.runs} </p>
-                <p> {this.state.todaysGame.home.name} - {this.state.todaysGame.home.runs} </p>
-              </li>
-            </ul>
-          </div>
+        let myTeamAtHome = this.state.myTeamAtHome
+        let homeTeamWon = this.state.todaysGame.home.runs > this.state.todaysGame.away.runs
+        if ((myTeamAtHome && homeTeamWon) || (!myTeamAtHome && !homeTeamWon)){
+          body = (
+            <div>
+              <ul className="ScoresList">
+                <li>
+                  <p className = "winText"> You know it! </p>
+                  <p className="awayTeamText"> {this.state.todaysGame.away.name} - {this.state.todaysGame.away.runs} </p>
+                  <p className="homeTeamText"> {this.state.todaysGame.home.name} - {this.state.todaysGame.home.runs} </p>
+                </li>
+              </ul>
+            </div>
           )
+        }
+        else {
+          body = (
+            <div>
+              <ul className="ScoresList">
+                <li>
+                  <p> Not Today Champ </p>
+                  <p> {this.state.todaysGame.away.name} - {this.state.todaysGame.away.runs} </p>
+                  <p> {this.state.todaysGame.home.name} - {this.state.todaysGame.home.runs} </p>
+                </li>
+              </ul>
+            </div>
+            )
+        }
       }
     }
-
     return (
       <div className="resultText">
         {body}
