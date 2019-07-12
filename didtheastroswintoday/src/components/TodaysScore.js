@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import {apiKey} from '../apiKey'
 import './TodaysScore.css';
+import VictoryMessage from './VictoryMessage'
+import DefeatMessage from './DefeatMessage'
 
 
 
@@ -57,7 +59,7 @@ export class TodaysScore extends Component {
             <div>
               <ul className="ScoresList">
                 <li>
-                  <p className = "winText"> You know it! </p>
+                  <p className = "winText"><VictoryMessage /></p>
                   <p className="awayTeamText"> {this.state.todaysGame.away.name} - {this.state.todaysGame.away.runs} </p>
                   <p className="homeTeamText"> {this.state.todaysGame.home.name} - {this.state.todaysGame.home.runs} </p>
                 </li>
@@ -70,7 +72,7 @@ export class TodaysScore extends Component {
             <div>
               <ul className="ScoresList">
                 <li>
-                  <p> Not Today Champ </p>
+                  <p><DefeatMessage /></p>
                   <p> {this.state.todaysGame.away.name} - {this.state.todaysGame.away.runs} </p>
                   <p> {this.state.todaysGame.home.name} - {this.state.todaysGame.home.runs} </p>
                 </li>
