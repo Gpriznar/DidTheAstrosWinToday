@@ -1,10 +1,27 @@
-.DTAWT {
+.desktopDTAWT {
 font-family: 'Permanent Marker', cursive;
   text-align: center;
   font-size: 108px;
   color: #002D62;
   margin: 15px;
 }
+
+.tabletDTAWT {
+font-family: 'Permanent Marker', cursive;
+  text-align: center;
+  font-size: 80px;
+  color: #002D62;
+  margin: 15px;
+}
+
+.mobileDTAWT {
+font-family: 'Permanent Marker', cursive;
+  text-align: center;
+  font-size: 40px;
+  color: #002D62;
+  margin: 15px;
+}
+
 .mainpage {
 	position: relative;
 }
