@@ -4,6 +4,9 @@ import {apiKey} from '../apiKey'
 import {apiPW} from '../apiKey'
 import './TodaysGame.css';
 import Breakpoint from 'react-socks'
+import VictoryMessage from "./VictoryMessage"
+import DefeatMessage from "./DefeatMessage"
+
 
 
 export class TodaysGame extends Component {
@@ -21,7 +24,7 @@ export class TodaysGame extends Component {
             topOrBottom: '',
             awayScore: 0,
             homeScore: 0,
-            gameStatus: '',
+            gameStatus: 'loading',
 
         }
     }
@@ -39,24 +42,36 @@ export class TodaysGame extends Component {
             }
         }).then(response => {
             const games = response.data.games[0]
-            this.setState({
+
+
+            if (response.data.references === null) {
+              this.setState({
+                gameStatus: 'none'
+              })
+            }
+            else if (response.data.references !== null) {
+              this.setState({
                 awayTeam: games.schedule.awayTeam.abbreviation,
                 homeTeam: games.schedule.homeTeam.abbreviation,
                 gameStart: new Date(games.schedule.startTime),
                 awayScore: games.score.awayScoreTotal,
                 homeScore: games.score.homeScoreTotal,
                 inning: games.score.currentInning,
-                topOrBottom: games.score.currentInningHalf
-            })
+                topOrBottom: games.score.currentInningHalf,
+              })
+            }
+
             if(games.schedule.playedStatus === "UNPLAYED") {
                 this.setState({
                     gameStatus: 'pregame'
                 })
-            } else if(games.schedule.playedStatus === "LIVE") {
+            }
+             else if(games.schedule.playedStatus === "LIVE") {
                 this.setState({
                     gameStatus: 'live'
                 })
-            } else {
+            }
+            else if(games.schedule.playedStatus === "COMPLETED"){
                 this.setState({
                     gameStatus: 'final'
                 })
@@ -68,9 +83,70 @@ export class TodaysGame extends Component {
     }
 
     render() {
-        let body = null
+      let body = null
 
-        if(this.state.gameStatus === 'pregame') {
+      if(this.state.gameStatus === 'loading') {
+        body = (
+          <div>Loading...</div>
+        )
+      }
+
+
+      else if(this.state.gameStatus === 'none') {
+        body = (
+          <div>
+          <p> No Game Today </p>
+          <p> Check Back Tomorrow!</p>
+          </div>
+        )
+      }
+
+      else if(this.state.gameStatus === 'live') {
+            body = (
+                <div>
+                <p>{this.state.awayTeam} - {this.state.awayScore}</p>
+                <p>{this.state.homeTeam} - {this.state.homeScore}</p>
+                <p>{this.state.topOrBottom} of inning {this.state.inning}</p>
+                </div>
+            )
+        }
+        else if(this.state.awayTeam === 'HOU' && this.state.awayScore > this.state.homeScore) {
+          body = (
+              <div>
+              <VictoryMessage />
+              <p>{this.state.awayTeam} - {this.state.awayScore}</p>
+              <p>{this.state.homeTeam} - {this.state.homeScore}</p>
+              </div>
+          )
+        }
+        else if(this.state.awayTeam === "HOU" && this.state.awayScore < this.state.homeScore) {
+          body = (
+              <div>
+              <DefeatMessage />
+              <p>{this.state.awayTeam} - {this.state.awayScore}</p>
+              <p>{this.state.homeTeam} - {this.state.homeScore}</p>
+              </div>
+          )
+        }
+        else if(this.state.homeTeam === 'HOU' && this.state.homeScore > this.state.awayScore) {
+          body = (
+              <div>
+              <VictoryMessage />
+              <p>{this.state.awayTeam} - {this.state.awayScore}</p>
+              <p>{this.state.homeTeam} - {this.state.homeScore}</p>
+              </div>
+          )
+        }
+        else if(this.state.homeTeam === "HOU" && this.state.homeScore < this.state.awayScore) {
+          body = (
+              <div>
+              <DefeatMessage />
+              <p>{this.state.awayTeam} - {this.state.awayScore}</p>
+              <p>{this.state.homeTeam} - {this.state.homeScore}</p>
+              </div>
+          )
+        }
+        else if(this.state.gameStatus === 'pregame') {
           let date = this.state.gameStart
           let isAM = true
           if(date.getHours() > 11) {
@@ -79,24 +155,7 @@ export class TodaysGame extends Component {
             body = (
                 <div>
                 <p> Game Starts at</p>
-                <p> {date.getHours().toString()}:{date.getMinutes().toString().padStart(2, '0')} {isAM ? 'AM':'PM'} (CDT)</p>
-                </div>
-            )
-        }
-        else if(this.state.gameStatus === 'live') {
-            body = (
-                <div>
-                <p>{this.state.awayTeam} - {this.state.awayScore}</p>
-                <p>{this.state.homeTeam} - {this.state.homeScore}</p>
-                <p>{this.state.topOrBottom} of the {this.state.inning}</p>
-                </div>
-            )
-        } else if(this.state.gameStatus === 'final') {
-            body = (
-                <div>
-                <p>Final Score</p>
-                <p>{this.state.awayTeam} - {this.state.awayScore}</p>
-                <p>{this.state.homeTeam} - {this.state.homeScore}</p>
+                <p> {date.getHours().toString() % 12}:{date.getMinutes().toString().padStart(2, '0')} {isAM ? 'AM':'PM'} (CDT)</p>
                 </div>
             )
         }

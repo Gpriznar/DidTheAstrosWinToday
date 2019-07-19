@@ -27,9 +27,6 @@ function App() {
     <div className="bar-eight"></div>
     <div className="bar-nine"></div>
     <div className="bar-zero"></div>
-
-
-
     </div>
   );
 }
