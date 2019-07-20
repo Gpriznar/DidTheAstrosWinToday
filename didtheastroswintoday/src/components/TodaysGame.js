@@ -42,7 +42,7 @@ export class TodaysGame extends Component {
       let month = (today.getUTCMonth() + 1).toString().padStart(2, '0')
         axios({
             method: 'get',
-            url: `https://api.mysportsfeeds.com/v2.1/pull/mlb/current/date/20190720/games.JSON?team=nym`,
+            url: `https://api.mysportsfeeds.com/v2.1/pull/mlb/current/date/20190720/games.JSON?team=hou`,
             auth: {
                 username: apiKey,
                 password: apiPW
