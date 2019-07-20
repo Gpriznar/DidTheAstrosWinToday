@@ -15,17 +15,16 @@ export class TodaysGame extends Component {
         super()
 
         this.state = {
-            venueId: 120,
+            // isHomeTeam: false,
             today: today,
             gameStart: '',
             homeTeam: '',
             awayTeam: '',
-            inning: 0,
+            inning: '',
             topOrBottom: '',
             awayScore: 0,
             homeScore: 0,
             gameStatus: 'loading',
-
         }
     }
 
@@ -35,7 +34,7 @@ export class TodaysGame extends Component {
       let month = (today.getUTCMonth() + 1).toString().padStart(2, '0')
         axios({
             method: 'get',
-            url: `https://api.mysportsfeeds.com/v2.1/pull/mlb/current/date/${today.getFullYear()}${month}${today.getUTCDate()}/games.JSON?team=hou`,
+            url: `https://api.mysportsfeeds.com/v2.1/pull/mlb/current/date/20190720/games.JSON?team=hou`,
             auth: {
                 username: apiKey,
                 password: apiPW
@@ -53,14 +52,41 @@ export class TodaysGame extends Component {
               this.setState({
                 awayTeam: games.schedule.awayTeam.abbreviation,
                 homeTeam: games.schedule.homeTeam.abbreviation,
+                venueId: games.schedule.venue.id,
                 gameStart: new Date(games.schedule.startTime),
                 awayScore: games.score.awayScoreTotal,
                 homeScore: games.score.homeScoreTotal,
-                inning: games.score.currentInning,
                 topOrBottom: games.score.currentInningHalf,
               })
             }
 
+            // if (games.schedule.venue.id === 120) {
+            //   this.setState({
+            //     isHomeTeam: true
+            //   })
+            // } 
+
+            // adding approprite suffix to numbers
+            let inning = games.score.currentInning
+            if(inning === 1) {
+              this.setState({
+                inning: inning + 'st'
+              })
+            } else if(inning === 2) {
+              this.setState({ 
+                inning: inning + 'nd'
+              })
+            } else if(inning === 3) {
+              this.setState({
+                inning: inning + 'rd'
+              })
+            } else {
+              this.setState({
+                inning: inning + 'th'
+              })
+            }
+            
+            // assigning the status of the game to the state
             if(games.schedule.playedStatus === "UNPLAYED") {
                 this.setState({
                     gameStatus: 'pregame'
@@ -91,7 +117,7 @@ export class TodaysGame extends Component {
         )
       }
 
-
+      // if there is an off day
       else if(this.state.gameStatus === 'none') {
         body = (
           <div>
@@ -100,65 +126,67 @@ export class TodaysGame extends Component {
           </div>
         )
       }
-
+      // game is live and updating
       else if(this.state.gameStatus === 'live') {
             body = (
                 <div>
                 <p>{this.state.awayTeam} - {this.state.awayScore}</p>
                 <p>{this.state.homeTeam} - {this.state.homeScore}</p>
-                <p>{this.state.topOrBottom} of inning {this.state.inning}</p>
+                <p>{this.state.topOrBottom} of the {this.state.inning}</p>
                 </div>
             )
         }
-        else if(this.state.awayTeam === 'HOU' && this.state.awayScore > this.state.homeScore) {
+      // logic to check to see if Houston won/lost to declare victory/defeat
+      else if(this.state.awayTeam === 'HOU' && this.state.awayScore > this.state.homeScore) {
+        body = (
+            <div>
+            <VictoryMessage />
+            <p>{this.state.awayTeam} - {this.state.awayScore}</p>
+            <p>{this.state.homeTeam} - {this.state.homeScore}</p>
+            </div>
+        )
+      }
+      else if(this.state.awayTeam === "HOU" && this.state.awayScore < this.state.homeScore) {
+        body = (
+            <div>
+            <DefeatMessage />
+            <p>{this.state.awayTeam} - {this.state.awayScore}</p>
+            <p>{this.state.homeTeam} - {this.state.homeScore}</p>
+            </div>
+        )
+      }
+      else if(this.state.homeTeam === 'HOU' && this.state.homeScore > this.state.awayScore) {
+        body = (
+            <div>
+            <VictoryMessage />
+            <p>{this.state.awayTeam} - {this.state.awayScore}</p>
+            <p>{this.state.homeTeam} - {this.state.homeScore}</p>
+            </div>
+        )
+      }
+      else if(this.state.homeTeam === "HOU" && this.state.homeScore < this.state.awayScore) {
+        body = (
+            <div>
+            <DefeatMessage />
+            <p>{this.state.awayTeam} - {this.state.awayScore}</p>
+            <p>{this.state.homeTeam} - {this.state.homeScore}</p>
+            </div>
+        )
+      }
+      // if the game hasn't started yet, display game start time
+      else if(this.state.gameStatus === 'pregame') {
+        let date = this.state.gameStart
+        let isAM = true
+        if(date.getHours() > 11) {
+          isAM = false
+        }
           body = (
               <div>
-              <VictoryMessage />
-              <p>{this.state.awayTeam} - {this.state.awayScore}</p>
-              <p>{this.state.homeTeam} - {this.state.homeScore}</p>
+              <p> Game Starts at</p>
+              <p> {date.getHours().toString() % 12}:{date.getMinutes().toString().padStart(2, '0')} {isAM ? 'AM':'PM'} (CT)</p>
               </div>
           )
-        }
-        else if(this.state.awayTeam === "HOU" && this.state.awayScore < this.state.homeScore) {
-          body = (
-              <div>
-              <DefeatMessage />
-              <p>{this.state.awayTeam} - {this.state.awayScore}</p>
-              <p>{this.state.homeTeam} - {this.state.homeScore}</p>
-              </div>
-          )
-        }
-        else if(this.state.homeTeam === 'HOU' && this.state.homeScore > this.state.awayScore) {
-          body = (
-              <div>
-              <VictoryMessage />
-              <p>{this.state.awayTeam} - {this.state.awayScore}</p>
-              <p>{this.state.homeTeam} - {this.state.homeScore}</p>
-              </div>
-          )
-        }
-        else if(this.state.homeTeam === "HOU" && this.state.homeScore < this.state.awayScore) {
-          body = (
-              <div>
-              <DefeatMessage />
-              <p>{this.state.awayTeam} - {this.state.awayScore}</p>
-              <p>{this.state.homeTeam} - {this.state.homeScore}</p>
-              </div>
-          )
-        }
-        else if(this.state.gameStatus === 'pregame') {
-          let date = this.state.gameStart
-          let isAM = true
-          if(date.getHours() > 11) {
-            isAM = false
-          }
-            body = (
-                <div>
-                <p> Game Starts at</p>
-                <p> {date.getHours().toString() % 12}:{date.getMinutes().toString().padStart(2, '0')} {isAM ? 'AM':'PM'} (CDT)</p>
-                </div>
-            )
-        }
+      }
 
 
         return (

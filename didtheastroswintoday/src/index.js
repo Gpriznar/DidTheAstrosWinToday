@@ -5,6 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BreakpointProvider } from 'react-socks';
 
+
 ReactDOM.render(
 <BreakpointProvider>
   <App />
