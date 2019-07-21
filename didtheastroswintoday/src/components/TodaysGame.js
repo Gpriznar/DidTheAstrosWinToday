@@ -6,6 +6,7 @@ import './TodaysGame.css';
 import Breakpoint from 'react-socks'
 import VictoryMessage from "./VictoryMessage"
 import DefeatMessage from "./DefeatMessage"
+import LoadingMessage from "./LoadingMessage"
 
 
 
@@ -31,8 +32,6 @@ export class TodaysGame extends Component {
             balls: 0,
             strikes: 0,
             runnersOn: ''
-            // runnerOnSecond: false,
-            // runnerOnThird: false
         }
     }
 
@@ -87,17 +86,17 @@ export class TodaysGame extends Component {
                 runnersOn: 'BASES LOADED!'
               })
             }
-            if (firstBaseRunner != null && secondBaseRunner != null) {
+            if (firstBaseRunner != null && secondBaseRunner != null && thirdBaseRunner === null) {
               this.setState({
                 runnersOn: 'Runners on 1st and 2nd'
               })
             }
-            if (firstBaseRunner != null && thirdBaseRunner != null) {
+            if (firstBaseRunner != null && secondBaseRunner === null && thirdBaseRunner != null) {
               this.setState({
                 runnersOn: 'Runners on 1st and 3rd'
               })
             }
-            if (secondBaseRunner != null && thirdBaseRunner != null) {
+            if (firstBaseRunner === null && secondBaseRunner != null && thirdBaseRunner != null) {
               this.setState({
                 runnersOn: 'Runners on 2nd and 3rd'
               })
@@ -152,7 +151,7 @@ export class TodaysGame extends Component {
                     gameStatus: 'live'
                 })
             }
-            else if(games.schedule.playedStatus === "COMPLETED"){
+            else if(games.schedule.playedStatus === "COMPLETED" || games.schedule.playedStatus === "COMPLETED_PENDING_REVIEW"){
                 this.setState({
                     gameStatus: 'final'
                 })
@@ -168,7 +167,7 @@ export class TodaysGame extends Component {
 
       if(this.state.gameStatus === 'loading') {
         body = (
-          <div>Loading...</div>
+          <div><LoadingMessage /></div>
         )
       }
 
@@ -202,6 +201,7 @@ export class TodaysGame extends Component {
             <VictoryMessage />
             <p>{this.state.awayTeam} - {this.state.awayScore}</p>
             <p>{this.state.homeTeam} - {this.state.homeScore}</p>
+            <p>Final</p>
             </div>
         )
       }
@@ -211,6 +211,7 @@ export class TodaysGame extends Component {
             <DefeatMessage />
             <p>{this.state.awayTeam} - {this.state.awayScore}</p>
             <p>{this.state.homeTeam} - {this.state.homeScore}</p>
+            <p>Final</p>
             </div>
         )
       }
@@ -220,6 +221,7 @@ export class TodaysGame extends Component {
             <VictoryMessage />
             <p>{this.state.awayTeam} - {this.state.awayScore}</p>
             <p>{this.state.homeTeam} - {this.state.homeScore}</p>
+            <p>Final</p>
             </div>
         )
       }
@@ -229,6 +231,7 @@ export class TodaysGame extends Component {
             <DefeatMessage />
             <p>{this.state.awayTeam} - {this.state.awayScore}</p>
             <p>{this.state.homeTeam} - {this.state.homeScore}</p>
+            <p>Final</p>
             </div>
         )
       }
