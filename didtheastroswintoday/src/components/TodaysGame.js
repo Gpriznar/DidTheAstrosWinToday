@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-import {apiKey} from '../apiKey'
-import {apiPW} from '../apiKey'
+import {apiKey} from './apiKey'
+import {apiPW} from './apiKey'
 import './TodaysGame.css';
 import Breakpoint from 'react-socks'
 import VictoryMessage from "./VictoryMessage"
@@ -127,7 +127,7 @@ export class TodaysGame extends Component {
             //     })
             //   }
             //   }
-            
+
             // adding approprite suffix to numbers
             let inning = games.score.currentInning
             if(inning === 1) {
@@ -135,7 +135,7 @@ export class TodaysGame extends Component {
                 inning: inning + 'st'
               })
             } else if(inning === 2) {
-              this.setState({ 
+              this.setState({
                 inning: inning + 'nd'
               })
             } else if(inning === 3) {
@@ -147,7 +147,7 @@ export class TodaysGame extends Component {
                 inning: inning + 'th'
               })
             }
-            
+
             // assigning the status of the game to the state
             if(games.schedule.playedStatus === "UNPLAYED") {
                 this.setState({
