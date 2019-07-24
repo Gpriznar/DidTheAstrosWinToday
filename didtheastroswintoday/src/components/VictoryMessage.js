@@ -4,7 +4,7 @@ export class VictoryMessage extends Component {
 
 render() {
 
-let winMessages = ['Oh yeaaa!', 'You know it!', 'What else did you expect?', 'YUPPP', 'Hell yea!', '%$*# YEAH!', 'Hot diggity!']
+let winMessages = ['Oh yeaaa!', 'You know it!', 'What else did you expect?', 'YUPPP', 'Hell yea!', '%$*# YEAH!', 'Hot diggity!', 'Baseball is good right now!']
 let randomIndex = Math.floor(Math.random() * winMessages.length)
 let randomVictoryMessage = winMessages[randomIndex]
 

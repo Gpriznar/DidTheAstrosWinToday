@@ -1,49 +1,38 @@
+
+
+
 .desktopDTAWT {
-font-family: 'Permanent Marker', cursive;
-  text-align: center;
-  font-size: 108px;
-  color: #002D62;
-  margin: 15px;
+	text-shadow: 0px 4px 3px rgba(0,0,0,0.4),
+				 0px 8px 13px rgba(0,0,0,0.1),
+				 0px 18px 23px rgba(0,0,0,0.1);
+	font-family: 'Prompt', sans-serif;
+	text-align: center;
+	font-size: 100px;
+	color: #002D62;
+	margin: 15px;
+	
 }
 
 .tabletDTAWT {
-font-family: 'Permanent Marker', cursive;
-  text-align: center;
-  font-size: 80px;
-  color: #002D62;
-  margin: 15px;
+	text-shadow: 0px 2px 3px rgba(0,0,0,0.4),
+                 0px 8px 13px rgba(0,0,0,0.1),
+                 0px 18px 23px rgba(0,0,0,0.1);
+	font-family: 'Prompt', sans-serif;
+	text-align: center;
+	font-size: 60px;
+	color: #002D62;
+	margin: 15px;
 }
 
 .mobileDTAWT {
-font-family: 'Permanent Marker', cursive;
-  text-align: center;
-  font-size: 40px;
-  color: #002D62;
-  margin: 15px;
-}
-
-.mainpage {
-	position: relative;
-}
-
-.star-outline {
-	position: absolute;
-	z-index: 2;
-}
-.score-display {
-	position: absolute;
-	top: 45%;
-	left: 0%;
-	z-index: 3;
-}
-
-.scheduleDiv {
-	display: flex;
-	justify-content: center;
-}
-
-.game {
-	margin: 10px;
+	text-shadow: 0px 2px 3px rgba(0,0,0,0.4),
+                 0px 8px 13px rgba(0,0,0,0.1),
+                 0px 18px 23px rgba(0,0,0,0.1);
+	font-family: 'Prompt', sans-serif;
+	text-align: center;
+	font-size: 40px;
+	color: #002D62;
+	margin: 15px;
 }
 
 .bar-zero {
@@ -95,4 +84,51 @@ font-family: 'Permanent Marker', cursive;
 	background-color: #eda400;
 	color: #eda400;
 	height: 75px;
+}
+
+/* mobile bar styling */
+.mobile-bar-zero {
+	background-color: #002D62;
+	color: #002D62;
+	height: 60px;
+}
+.mobile-bar-one {
+	background-color: #eda400;
+	color: #eda400;
+	height: 60px;
+}
+.mobile-bar-two {
+	background-color: #f43c1e;
+	color: #f43c1e;
+	height: 60px;
+}
+.mobile-bar-three {
+	background-color: #EB6E1F;
+	color: #EB6E1F;
+	height: 60px;
+}
+.mobile-bar-four {
+	background-color: #F4871E;
+	color: #F4871E;
+	height: 60px;
+}
+.mobile-bar-five {
+	background-color: #eda400;
+	color: #eda400;
+	height: 60px;
+}
+.mobile-bar-six {
+	background-color: #f43c1e;
+	color: #f43c1e;
+	height: 60px;
+}
+.mobile-bar-seven {
+	background-color: #EB6E1F;
+	color: #EB6E1F;
+	height: 60px;
+}
+.mobile-bar-zero {
+	background-color: #002D62;
+	color: #002D62;
+	height: 60px;
 }

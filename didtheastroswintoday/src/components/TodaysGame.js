@@ -41,7 +41,7 @@ export class TodaysGame extends Component {
       let month = (today.getUTCMonth() + 1).toString().padStart(2, '0')
         axios({
             method: 'get',
-            url: `https://api.mysportsfeeds.com/v2.1/pull/mlb/current/date/20190720/games.JSON?team=hou`,
+            url: `https://api.mysportsfeeds.com/v2.1/pull/mlb/current/date/${today.getFullYear()}${month}${today.getUTCDate() - 1}/games.JSON?team=hou`,
             auth: {
                 username: apiKey,
                 password: apiPW
@@ -63,63 +63,71 @@ export class TodaysGame extends Component {
                 gameStart: new Date(games.schedule.startTime),
                 awayScore: games.score.awayScoreTotal,
                 homeScore: games.score.homeScoreTotal,
-                topOrBottom: games.score.currentInningHalf,
-                batterLastName: games.score.playStatus.batter.lastName,
-                pitcherLastName: games.score.playStatus.pitcher.lastName,
-                outs: games.score.playStatus.outCount,
-                balls: games.score.playStatus.ballCount,
-                strikes: games.score.playStatus.strikeCount,
+                topOrBottom: games.score.currentInningHalf
               })
             }
+            // this statement checks to see if the game started and include stats into the state
+            // else if (response.data.references !== null && games.score.currentInning !== null) {
+            //   this.setState({
+            //     awayTeam: games.schedule.awayTeam.abbreviation,
+            //     homeTeam: games.schedule.homeTeam.abbreviation,
+            //     venueId: games.schedule.venue.id,
+            //     gameStart: new Date(games.schedule.startTime),
+            //     awayScore: games.score.awayScoreTotal,
+            //     homeScore: games.score.homeScoreTotal,
+            //     topOrBottom: games.score.currentInningHalf,
+            //     batterLastName: games.score.playStatus.batter.lastName,
+            //     pitcherLastName: games.score.playStatus.pitcher.lastName,
+            //     outs: games.score.playStatus.outCount,
+            //     balls: games.score.playStatus.ballCount,
+            //     strikes: games.score.playStatus.strikeCount,
+            //   })
+            //       //checking for runners on base
+            //   let firstBaseRunner = games.score.playStatus.firstBaseRunner
+            //   let secondBaseRunner = games.score.playStatus.secondBaseRunner
+            //   let thirdBaseRunner = games.score.playStatus.thirdBaseRunner
+            //   if(firstBaseRunner == null && secondBaseRunner === null && thirdBaseRunner === null) {
+            //     this.setState({
+            //       runnersOn: ''
+            //     })
+            //   }
+            //   if (firstBaseRunner != null && secondBaseRunner != null && thirdBaseRunner != null) {
+            //     this.setState({
+            //       runnersOn: 'BASES LOADED!'
+            //     })
+            //   }
+            //   if (firstBaseRunner != null && secondBaseRunner != null && thirdBaseRunner === null) {
+            //     this.setState({
+            //       runnersOn: 'Runners on 1st and 2nd'
+            //     })
+            //   }
+            //   if (firstBaseRunner != null && secondBaseRunner === null && thirdBaseRunner != null) {
+            //     this.setState({
+            //       runnersOn: 'Runners on 1st and 3rd'
+            //     })
+            //   }
+            //   if (firstBaseRunner === null && secondBaseRunner != null && thirdBaseRunner != null) {
+            //     this.setState({
+            //       runnersOn: 'Runners on 2nd and 3rd'
+            //     })
+            //   }
+            //   if (firstBaseRunner != null && secondBaseRunner === null && thirdBaseRunner === null) {
+            //     this.setState({
+            //       runnersOn: 'Runner on 1st'
+            //     })
+            //   }
+            //   if (secondBaseRunner != null && firstBaseRunner === null && thirdBaseRunner === null) {
+            //     this.setState({
+            //       runnersOn: 'Runner on 2nd'
+            //     })
+            //   }
+            //   if (thirdBaseRunner != null && firstBaseRunner === null && secondBaseRunner === null) {
+            //     this.setState({
+            //       runnersOn: 'Runner on 3rd'
+            //     })
+            //   }
+            //   }
             
-            // checking for runners on base
-            let firstBaseRunner = games.score.playStatus.firstBaseRunner
-            let secondBaseRunner = games.score.playStatus.secondBaseRunner
-            let thirdBaseRunner = games.score.playStatus.thirdBaseRunner
-            if(firstBaseRunner == null && secondBaseRunner === null && thirdBaseRunner === null) {
-              this.setState({
-                runnersOn: ''
-              })
-            }
-            if (firstBaseRunner != null && secondBaseRunner != null && thirdBaseRunner != null) {
-              this.setState({
-                runnersOn: 'BASES LOADED!'
-              })
-            }
-            if (firstBaseRunner != null && secondBaseRunner != null && thirdBaseRunner === null) {
-              this.setState({
-                runnersOn: 'Runners on 1st and 2nd'
-              })
-            }
-            if (firstBaseRunner != null && secondBaseRunner === null && thirdBaseRunner != null) {
-              this.setState({
-                runnersOn: 'Runners on 1st and 3rd'
-              })
-            }
-            if (firstBaseRunner === null && secondBaseRunner != null && thirdBaseRunner != null) {
-              this.setState({
-                runnersOn: 'Runners on 2nd and 3rd'
-              })
-            }
-            if (firstBaseRunner != null && secondBaseRunner === null && thirdBaseRunner === null) {
-              this.setState({
-                runnersOn: 'Runner on 1st'
-              })
-            }
-            if (secondBaseRunner != null && firstBaseRunner === null && thirdBaseRunner === null) {
-              this.setState({
-                runnersOn: 'Runner on 2nd'
-              })
-            }
-            if (thirdBaseRunner != null && firstBaseRunner === null && secondBaseRunner === null) {
-              this.setState({
-                runnersOn: 'Runner on 3rd'
-              })
-            }
-            
-
-            
-
             // adding approprite suffix to numbers
             let inning = games.score.currentInning
             if(inning === 1) {
@@ -186,11 +194,7 @@ export class TodaysGame extends Component {
                 <div>
                 <p>{this.state.awayTeam} - {this.state.awayScore}</p>
                 <p>{this.state.homeTeam} - {this.state.homeScore}</p>
-                <p>Pitching: {this.state.pitcherLastName} </p>
-                <p>{this.state.outs} out(s) in the {this.state.topOrBottom} of the {this.state.inning}</p>
-                <p> At Bat: {this.state.batterLastName} </p>
-                <p>{this.state.balls}-{this.state.strikes}</p>
-                <p>{this.state.runnersOn}</p>
+                <p>{this.state.topOrBottom} of the {this.state.inning}</p>
                 </div>
             )
         }
