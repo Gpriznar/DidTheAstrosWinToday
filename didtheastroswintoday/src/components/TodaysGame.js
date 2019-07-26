@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-import {apiKey} from './apiKey'
-import {apiPW} from './apiKey'
+import {apiKey} from '../apiKey'
+import {apiPW} from '../apiKey'
 import './TodaysGame.css';
 import Breakpoint from 'react-socks'
 import VictoryMessage from "./VictoryMessage"
@@ -41,7 +41,7 @@ export class TodaysGame extends Component {
       let month = (today.getUTCMonth() + 1).toString().padStart(2, '0')
         axios({
             method: 'get',
-            url: `https://api.mysportsfeeds.com/v2.1/pull/mlb/current/date/${today.getFullYear()}${month}${today.getUTCDate() - 1}/games.JSON?team=hou`,
+            url: `https://api.mysportsfeeds.com/v2.1/pull/mlb/current/date/${today.getFullYear()}${month}${today.getDate()}/games.JSON?team=hou`,
             auth: {
                 username: apiKey,
                 password: apiPW
