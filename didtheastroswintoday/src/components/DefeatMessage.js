@@ -4,7 +4,7 @@ export class DefeatMessage extends Component {
 
 render() {
 
-  let defeatMessages = ['Uh oh', 'Maybe next time', 'Not today', 'Dang...', 'Unfortunately Not', 'NOOOOOO!', 'Baseball is bad right now']
+  let defeatMessages = ['UH OH', 'MAYBE NEXT TIME', 'NOT TODAY', 'DANG...', 'UNFORTUNATELY NOT', 'NOOOOOO!', 'BASEBALL IS BAD', 'NO.', 'THEY DID NOT']
   let randomIndex = Math.floor(Math.random() * defeatMessages.length)
   let randomDefeatMessage = defeatMessages[randomIndex]
 
